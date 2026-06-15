@@ -25,7 +25,7 @@ type Product = {
   category: string
   status: string
   created_at: string
-  profiles: { nickname: string } | null
+  profiles: { nickname: string }[] | null
 }
 
 export default async function HomePage() {
@@ -140,7 +140,7 @@ export default async function HomePage() {
                     </p>
                     <p className="font-bold text-gray-900">{formatPrice(product.price)}</p>
                     <p className="text-xs text-gray-400 mt-1">
-                      {product.profiles?.nickname ?? '알 수 없음'}
+                      {product.profiles?.[0]?.nickname ?? '알 수 없음'}
                     </p>
                   </div>
 
