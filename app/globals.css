@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+  --color-goguma: #E8622A;
+  --color-goguma-dark: #C4501E;
+  --color-goguma-light: #FFF5F0;
+  --color-goguma-purple: #6B21A8;
+  --color-goguma-cream: #FFFBF5;
+}
+
+body {
+  font-family: 'Apple SD Gothic Neo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #FFFBF5;
+}
+
+input:focus {
+  outline: none;
+}
