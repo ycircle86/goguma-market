@@ -71,7 +71,7 @@ export default function LoginPage() {
           </div>
 
           {/* 서버 액션 에러 메시지 */}
-          {state?.error && (
+          {state && 'error' in state && (
             <p className="text-sm text-red-500 bg-red-50 p-3 rounded-xl">{state.error}</p>
           )}
 
