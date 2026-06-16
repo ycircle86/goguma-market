@@ -91,7 +91,7 @@ export default async function UserProfilePage({
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="text-4xl">🧟</span>
+                <span className="text-4xl animate-swagger">🧟</span>
               )}
             </div>
             <div className="min-w-0">
@@ -116,7 +116,7 @@ export default async function UserProfilePage({
 
           {productList.length === 0 ? (
             <div className="text-center py-12 px-4">
-              <div className="text-4xl mb-3">🧟</div>
+              <div className="text-4xl mb-3"><span className="animate-float">🧟</span></div>
               <p className="text-sm text-gray-400">아직 올린 글이 없어요.</p>
             </div>
           ) : (

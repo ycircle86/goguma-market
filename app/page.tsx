@@ -54,8 +54,8 @@ export default async function HomePage() {
       {/* 헤더 */}
       <header className="bg-white border-b border-lime-100 sticky top-0 z-10">
         <div className="max-w-screen-md mx-auto px-4 h-14 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 font-bold text-gray-800 text-lg">
-            <span>🧟</span>
+          <Link href="/" className="group flex items-center gap-2 font-bold text-gray-800 text-lg">
+            <span className="inline-block transition-transform duration-300 group-hover:rotate-12 group-hover:scale-125">🧟</span>
             <span>고구마 마켓</span>
           </Link>
 
@@ -100,11 +100,36 @@ export default async function HomePage() {
         </div>
       </header>
 
+      {/* 으스대는 좀비 히어로 배너 */}
+      <section className="relative overflow-hidden border-b border-lime-200 bg-gradient-to-br from-lime-200 via-goguma-light to-lime-100">
+        <div className="max-w-screen-md mx-auto px-5 py-8 flex items-center gap-4 sm:gap-6">
+          {/* 으스대는 좀비 */}
+          <div className="relative flex-shrink-0">
+            <span className="text-6xl sm:text-7xl animate-swagger">🧟</span>
+            <span className="absolute -top-1 -right-2 text-xl animate-sparkle">✨</span>
+            <span className="absolute top-7 -left-3 text-base animate-sparkle [animation-delay:0.7s]">✨</span>
+          </div>
+
+          <div className="min-w-0">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-goguma-dark leading-snug">
+              으스대는 좀비들의 중고 장터
+            </h2>
+            <p className="text-sm text-goguma-dark/70 mt-1.5">
+              썩어도 준치! 우리 동네 좀비템을 거래해보세요 🦴
+            </p>
+          </div>
+        </div>
+
+        {/* 둥둥 떠다니는 배경 장식 */}
+        <span className="absolute -bottom-2 right-6 text-3xl opacity-25 animate-float [animation-delay:0.4s]">🦴</span>
+        <span className="absolute top-3 right-28 text-2xl opacity-20 animate-float [animation-delay:1.2s]">🧠</span>
+      </section>
+
       {/* 상품 목록 */}
       <main className="max-w-screen-md mx-auto">
         {!products || products.length === 0 ? (
           <div className="text-center py-24 px-4">
-            <div className="text-5xl mb-4">🧟</div>
+            <div className="text-5xl mb-4"><span className="animate-swagger">🧟</span></div>
             <p className="font-semibold text-gray-600 mb-1">아직 깨어난 좀비템이 없어요</p>
             <p className="text-sm text-gray-400 mb-6">첫 번째 좀비템을 풀어놓아 보세요!</p>
             {user ? (
@@ -125,11 +150,15 @@ export default async function HomePage() {
           </div>
         ) : (
           <ul className="divide-y divide-gray-100 bg-white">
-            {(products as Product[]).map((product) => (
-              <li key={product.id}>
+            {(products as Product[]).map((product, index) => (
+              <li
+                key={product.id}
+                className="animate-fade-in-up"
+                style={{ animationDelay: `${Math.min(index * 60, 600)}ms` }}
+              >
                 <Link
                   href={`/products/${product.id}`}
-                  className="flex gap-4 px-4 py-4 hover:bg-lime-50 transition-colors"
+                  className="group flex gap-4 px-4 py-4 hover:bg-lime-50 transition-colors"
                 >
                   {/* 썸네일 */}
                   <div className="w-24 h-24 rounded-2xl bg-lime-50 border border-lime-100 flex-shrink-0 overflow-hidden">
@@ -138,10 +167,10 @@ export default async function HomePage() {
                       <img
                         src={product.image_url}
                         alt={product.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-3xl">
+                      <div className="w-full h-full flex items-center justify-center text-3xl transition-transform duration-300 group-hover:scale-125 group-hover:rotate-6">
                         🧟
                       </div>
                     )}

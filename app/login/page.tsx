@@ -80,7 +80,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4">
       <div className="mb-8 text-center">
-        <div className="text-5xl mb-3">🧟</div>
+        <div className="text-5xl mb-3"><span className="animate-swagger">🧟</span></div>
         <h1 className="text-2xl font-bold text-gray-800">고구마 마켓</h1>
         <p className="text-sm text-gray-500 mt-1">동네 좀비와 함께하는 으스스 귀여운 거래</p>
       </div>

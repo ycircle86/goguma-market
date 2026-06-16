@@ -119,7 +119,7 @@ export default async function ProductDetailPage({
           ) : (
             <div className="h-64 flex items-center justify-center">
               <div className="text-center text-gray-300">
-                <div className="text-6xl mb-2">🧟</div>
+                <div className="text-6xl mb-2"><span className="animate-swagger">🧟</span></div>
                 <p className="text-sm">사진 없음</p>
               </div>
             </div>

@@ -23,3 +23,82 @@ body {
 input:focus {
   outline: none;
 }
+
+/* ===== 🧟 으스대는 좀비 애니메이션 ===== */
+
+/* 어깨에 힘주고 으스대며 좌우로 흔들흔들 */
+@keyframes zombie-swagger {
+  0%   { transform: rotate(-7deg) translateY(0); }
+  25%  { transform: rotate(5deg) translateY(-5px); }
+  50%  { transform: rotate(-5deg) translateY(0); }
+  75%  { transform: rotate(7deg) translateY(-5px); }
+  100% { transform: rotate(-7deg) translateY(0); }
+}
+.animate-swagger {
+  display: inline-block;
+  transform-origin: bottom center;
+  animation: zombie-swagger 2.4s ease-in-out infinite;
+}
+
+/* 둥둥 떠다니기 */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+.animate-float {
+  display: inline-block;
+  animation: float 3.2s ease-in-out infinite;
+}
+
+/* 좌우로 까딱까딱 */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-9deg); }
+  50%      { transform: rotate(9deg); }
+}
+.animate-wiggle {
+  display: inline-block;
+  animation: wiggle 1.4s ease-in-out infinite;
+}
+
+/* 반짝반짝 */
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.4) rotate(0deg); }
+  50%      { opacity: 1; transform: scale(1) rotate(25deg); }
+}
+.animate-sparkle {
+  display: inline-block;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+/* 좋아요 팡! 터지기 */
+@keyframes pop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.45) rotate(-12deg); }
+  65%  { transform: scale(0.85); }
+  100% { transform: scale(1); }
+}
+.animate-pop {
+  display: inline-block;
+  animation: pop 0.45s ease-out;
+}
+
+/* 아래에서 살짝 떠오르며 나타나기 */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out both;
+}
+
+/* 움직임 최소화를 원하는 사용자 배려 */
+@media (prefers-reduced-motion: reduce) {
+  .animate-swagger,
+  .animate-float,
+  .animate-wiggle,
+  .animate-sparkle,
+  .animate-pop,
+  .animate-fade-in-up {
+    animation: none;
+  }
+}
