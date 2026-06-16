@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useEffect } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createProduct } from '@/app/actions'
@@ -20,12 +20,28 @@ const CATEGORIES = [
 export default function SellPage() {
   const [state, action, isPending] = useActionState(createProduct, undefined)
   const router = useRouter()
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (state && 'redirectTo' in state) {
       router.push(state.redirectTo)
     }
   }, [state, router])
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setPreviewUrl(URL.createObjectURL(file))
+    } else {
+      setPreviewUrl(null)
+    }
+  }
+
+  const handleRemoveImage = () => {
+    setPreviewUrl(null)
+    if (fileInputRef.current) fileInputRef.current.value = ''
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -42,6 +58,50 @@ export default function SellPage() {
       {/* 폼 */}
       <main className="max-w-screen-md mx-auto px-4 py-6">
         <form action={action} className="space-y-5">
+
+          {/* 사진 업로드 */}
+          <div className="bg-white rounded-2xl border border-orange-100 p-5">
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              사진 <span className="text-gray-400 font-normal text-xs">(선택 · 최대 5MB)</span>
+            </label>
+
+            {previewUrl ? (
+              <div className="relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={previewUrl}
+                  alt="업로드 미리보기"
+                  className="w-full h-56 object-cover rounded-xl"
+                />
+                <button
+                  type="button"
+                  onClick={handleRemoveImage}
+                  className="absolute top-2 right-2 w-7 h-7 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center text-xs transition-colors"
+                >
+                  ✕
+                </button>
+              </div>
+            ) : (
+              <label
+                htmlFor="image-upload"
+                className="flex flex-col items-center justify-center h-40 border-2 border-dashed border-orange-200 rounded-xl cursor-pointer hover:bg-orange-50 transition-colors"
+              >
+                <div className="text-3xl mb-2">📷</div>
+                <p className="text-sm text-gray-400">클릭해서 사진 추가</p>
+                <p className="text-xs text-gray-300 mt-1">JPG · PNG · WEBP · GIF</p>
+              </label>
+            )}
+
+            <input
+              ref={fileInputRef}
+              id="image-upload"
+              type="file"
+              name="image"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageChange}
+            />
+          </div>
 
           {/* 제목 */}
           <div className="bg-white rounded-2xl border border-orange-100 p-5">

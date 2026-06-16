@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useEffect } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { ActionState } from '@/app/actions'
@@ -23,6 +23,7 @@ type Product = {
   price: number
   description: string
   category: string
+  image_url: string | null
 }
 
 type Props = {
@@ -33,12 +34,29 @@ type Props = {
 export default function EditForm({ product, action }: Props) {
   const [state, formAction, isPending] = useActionState(action, undefined)
   const router = useRouter()
+  const [previewUrl, setPreviewUrl] = useState<string | null>(product.image_url)
+  const [removeImage, setRemoveImage] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (state && 'redirectTo' in state) {
       router.push(state.redirectTo)
     }
   }, [state, router])
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setPreviewUrl(URL.createObjectURL(file))
+      setRemoveImage(false)
+    }
+  }
+
+  const handleRemoveImage = () => {
+    setPreviewUrl(null)
+    setRemoveImage(true)
+    if (fileInputRef.current) fileInputRef.current.value = ''
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -53,6 +71,62 @@ export default function EditForm({ product, action }: Props) {
 
       <main className="max-w-screen-md mx-auto px-4 py-6">
         <form action={formAction} className="space-y-5">
+
+          {/* 숨김 필드: 기존 이미지 URL과 삭제 여부 전달 */}
+          <input type="hidden" name="existing_image_url" value={product.image_url ?? ''} />
+          <input type="hidden" name="remove_image" value={removeImage ? 'true' : 'false'} />
+
+          {/* 사진 관리 */}
+          <div className="bg-white rounded-2xl border border-orange-100 p-5">
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              사진 <span className="text-gray-400 font-normal text-xs">(선택 · 최대 5MB)</span>
+            </label>
+
+            {previewUrl ? (
+              <div className="relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={previewUrl}
+                  alt="상품 이미지"
+                  className="w-full h-56 object-cover rounded-xl"
+                />
+                <div className="absolute top-2 right-2 flex gap-1.5">
+                  <label
+                    htmlFor="image-upload"
+                    className="px-3 py-1 bg-black/50 hover:bg-black/70 text-white text-xs rounded-full cursor-pointer transition-colors"
+                  >
+                    변경
+                  </label>
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="px-3 py-1 bg-black/50 hover:bg-black/70 text-white text-xs rounded-full transition-colors"
+                  >
+                    삭제
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <label
+                htmlFor="image-upload"
+                className="flex flex-col items-center justify-center h-40 border-2 border-dashed border-orange-200 rounded-xl cursor-pointer hover:bg-orange-50 transition-colors"
+              >
+                <div className="text-3xl mb-2">📷</div>
+                <p className="text-sm text-gray-400">클릭해서 사진 추가</p>
+                <p className="text-xs text-gray-300 mt-1">JPG · PNG · WEBP · GIF</p>
+              </label>
+            )}
+
+            <input
+              ref={fileInputRef}
+              id="image-upload"
+              type="file"
+              name="image"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageChange}
+            />
+          </div>
 
           <div className="bg-white rounded-2xl border border-orange-100 p-5">
             <label className="block text-sm font-semibold text-gray-700 mb-2">

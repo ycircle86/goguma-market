@@ -25,6 +25,7 @@ type Product = {
   category: string
   status: string
   created_at: string
+  image_url: string | null
   profiles: { nickname: string }[] | null
 }
 
@@ -44,7 +45,7 @@ export default async function HomePage() {
 
   const { data: products } = await supabase
     .from('products')
-    .select('id, title, price, category, status, created_at, profiles(nickname)')
+    .select('id, title, price, category, status, created_at, image_url, profiles(nickname)')
     .order('created_at', { ascending: false })
     .limit(50)
 
@@ -127,9 +128,20 @@ export default async function HomePage() {
                   href={`/products/${product.id}`}
                   className="flex gap-4 px-4 py-4 hover:bg-orange-50 transition-colors"
                 >
-                  {/* 이미지 자리 */}
-                  <div className="w-24 h-24 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center flex-shrink-0 text-3xl">
-                    📦
+                  {/* 썸네일 */}
+                  <div className="w-24 h-24 rounded-2xl bg-orange-50 border border-orange-100 flex-shrink-0 overflow-hidden">
+                    {product.image_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={product.image_url}
+                        alt={product.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-3xl">
+                        📦
+                      </div>
+                    )}
                   </div>
 
                   {/* 상품 정보 */}

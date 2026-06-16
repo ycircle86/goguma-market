@@ -68,12 +68,23 @@ export default async function ProductDetailPage({
       </header>
 
       <main className="max-w-screen-md mx-auto px-4 py-5 space-y-3">
-        {/* 이미지 자리 */}
-        <div className="bg-white rounded-2xl border border-orange-100 h-64 flex items-center justify-center">
-          <div className="text-center text-gray-300">
-            <div className="text-6xl mb-2">📦</div>
-            <p className="text-sm">사진 없음</p>
-          </div>
+        {/* 상품 이미지 */}
+        <div className="bg-white rounded-2xl border border-orange-100 overflow-hidden">
+          {product.image_url ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={product.image_url}
+              alt={product.title}
+              className="w-full h-72 object-cover"
+            />
+          ) : (
+            <div className="h-64 flex items-center justify-center">
+              <div className="text-center text-gray-300">
+                <div className="text-6xl mb-2">📦</div>
+                <p className="text-sm">사진 없음</p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* 판매자 정보 */}

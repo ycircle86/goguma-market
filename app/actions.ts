@@ -71,6 +71,35 @@ export async function logout() {
   redirect('/login')
 }
 
+// --- 이미지 업로드/삭제 헬퍼 ---
+
+type SupabaseClient = Awaited<ReturnType<typeof createClient>>
+
+async function uploadImage(supabase: SupabaseClient, userId: string, file: File): Promise<string | null> {
+  const ext = file.name.split('.').pop() ?? 'jpg'
+  const filename = `${userId}/${Date.now()}.${ext}`
+  const { data, error } = await supabase.storage
+    .from('product-images')
+    .upload(filename, file, { contentType: file.type, upsert: false })
+  if (error || !data) return null
+  const { data: { publicUrl } } = supabase.storage.from('product-images').getPublicUrl(data.path)
+  return publicUrl
+}
+
+async function deleteImage(supabase: SupabaseClient, imageUrl: string) {
+  const parts = imageUrl.split('/product-images/')
+  if (parts.length < 2) return
+  await supabase.storage.from('product-images').remove([parts[1]])
+}
+
+function validateImageFile(file: File): string | null {
+  if (!file.type.startsWith('image/')) return '이미지 파일만 업로드 가능합니다.'
+  if (file.size > 5 * 1024 * 1024) return '이미지 크기는 5MB 이하여야 합니다.'
+  return null
+}
+
+// --- 판매글 액션 ---
+
 export async function createProduct(prevState: ActionState, formData: FormData): Promise<ActionState> {
   const supabase = await createClient()
 
@@ -83,6 +112,7 @@ export async function createProduct(prevState: ActionState, formData: FormData):
   const priceStr = formData.get('price') as string
   const description = (formData.get('description') as string)?.trim()
   const category = formData.get('category') as string
+  const imageFile = formData.get('image') as File | null
 
   if (!title) return { error: '제목을 입력해주세요.' }
   if (!priceStr) return { error: '가격을 입력해주세요.' }
@@ -92,12 +122,21 @@ export async function createProduct(prevState: ActionState, formData: FormData):
   const price = parseInt(priceStr, 10)
   if (isNaN(price) || price < 0) return { error: '올바른 가격을 입력해주세요.' }
 
+  let imageUrl: string | null = null
+  if (imageFile && imageFile.size > 0) {
+    const imgError = validateImageFile(imageFile)
+    if (imgError) return { error: imgError }
+    imageUrl = await uploadImage(supabase, user.id, imageFile)
+    if (!imageUrl) return { error: '이미지 업로드 중 오류가 발생했습니다.' }
+  }
+
   const { error } = await supabase.from('products').insert({
     title,
     price,
     description,
     category,
     seller_id: user.id,
+    image_url: imageUrl,
   })
 
   if (error) {
@@ -118,6 +157,9 @@ export async function updateProduct(id: string, prevState: ActionState, formData
   const priceStr = formData.get('price') as string
   const description = (formData.get('description') as string)?.trim()
   const category = formData.get('category') as string
+  const imageFile = formData.get('image') as File | null
+  const existingImageUrl = (formData.get('existing_image_url') as string) || null
+  const removeImage = formData.get('remove_image') === 'true'
 
   if (!title) return { error: '제목을 입력해주세요.' }
   if (!priceStr) return { error: '가격을 입력해주세요.' }
@@ -127,9 +169,22 @@ export async function updateProduct(id: string, prevState: ActionState, formData
   const price = parseInt(priceStr, 10)
   if (isNaN(price) || price < 0) return { error: '올바른 가격을 입력해주세요.' }
 
+  let imageUrl: string | null = existingImageUrl
+
+  if (removeImage && existingImageUrl) {
+    await deleteImage(supabase, existingImageUrl)
+    imageUrl = null
+  } else if (imageFile && imageFile.size > 0) {
+    const imgError = validateImageFile(imageFile)
+    if (imgError) return { error: imgError }
+    if (existingImageUrl) await deleteImage(supabase, existingImageUrl)
+    imageUrl = await uploadImage(supabase, user.id, imageFile)
+    if (!imageUrl) return { error: '이미지 업로드 중 오류가 발생했습니다.' }
+  }
+
   const { error } = await supabase
     .from('products')
-    .update({ title, price, description, category })
+    .update({ title, price, description, category, image_url: imageUrl })
     .eq('id', id)
     .eq('seller_id', user.id)
 
@@ -145,6 +200,17 @@ export async function deleteProduct(id: string) {
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+
+  const { data: product } = await supabase
+    .from('products')
+    .select('image_url')
+    .eq('id', id)
+    .eq('seller_id', user.id)
+    .single()
+
+  if (product?.image_url) {
+    await deleteImage(supabase, product.image_url)
+  }
 
   await supabase
     .from('products')

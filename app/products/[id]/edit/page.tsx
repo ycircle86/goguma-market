@@ -16,7 +16,7 @@ export default async function EditPage({
 
   const { data: product } = await supabase
     .from('products')
-    .select('id, title, price, description, category')
+    .select('id, title, price, description, category, image_url')
     .eq('id', id)
     .eq('seller_id', user.id)
     .single()
