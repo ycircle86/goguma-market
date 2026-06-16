@@ -54,7 +54,7 @@ export default async function ProductDetailPage({
     supabase.auth.getUser(),
     supabase
       .from('products')
-      .select('*, profiles(nickname)')
+      .select('*, profiles(nickname, avatar_url)')
       .eq('id', id)
       .single(),
     supabase
@@ -126,18 +126,30 @@ export default async function ProductDetailPage({
           )}
         </div>
 
-        {/* 판매자 정보 */}
-        <div className="bg-white rounded-2xl border border-lime-100 p-4 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-lime-100 flex items-center justify-center text-xl flex-shrink-0">
-            🧟
+        {/* 판매자 정보 (클릭 시 프로필로 이동) */}
+        <Link
+          href={`/users/${product.seller_id}`}
+          className="bg-white rounded-2xl border border-lime-100 p-4 flex items-center gap-3 hover:bg-lime-50 transition-colors"
+        >
+          <div className="w-10 h-10 rounded-full bg-lime-100 flex items-center justify-center text-xl flex-shrink-0 overflow-hidden">
+            {product.profiles?.avatar_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={product.profiles.avatar_url}
+                alt={product.profiles?.nickname ?? '판매자'}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              '🧟'
+            )}
           </div>
-          <div>
-            <p className="font-semibold text-sm text-gray-800">
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold text-sm text-gray-800 truncate">
               {product.profiles?.nickname ?? '알 수 없음'}
             </p>
-            <p className="text-xs text-gray-400">판매자</p>
+            <p className="text-xs text-gray-400">판매자 · 프로필 보기 →</p>
           </div>
-        </div>
+        </Link>
 
         {/* 상품 정보 */}
         <div className="bg-white rounded-2xl border border-lime-100 p-5 space-y-4">

@@ -62,9 +62,12 @@ export default async function HomePage() {
           <div className="flex items-center gap-2">
             {user ? (
               <>
-                <span className="text-sm text-gray-500 hidden sm:block">
+                <Link
+                  href={`/users/${user.id}`}
+                  className="text-sm text-gray-500 hover:text-goguma transition-colors hidden sm:block"
+                >
                   {profile?.nickname ?? user.email}님
-                </span>
+                </Link>
                 <Link
                   href="/sell"
                   className="text-sm px-3 py-1.5 bg-goguma text-white rounded-full hover:bg-goguma-dark transition-colors"

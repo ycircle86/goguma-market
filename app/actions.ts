@@ -98,6 +98,50 @@ function validateImageFile(file: File): string | null {
   return null
 }
 
+// --- 프로필 액션 ---
+
+export async function updateProfile(prevState: ActionState, formData: FormData): Promise<ActionState> {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: '로그인이 필요합니다.' }
+
+  const nickname = (formData.get('nickname') as string)?.trim()
+  const bio = (formData.get('bio') as string)?.trim() || null
+  const imageFile = formData.get('avatar') as File | null
+  const existingAvatarUrl = (formData.get('existing_avatar_url') as string) || null
+  const removeAvatar = formData.get('remove_avatar') === 'true'
+
+  if (!nickname) return { error: '닉네임을 입력해주세요.' }
+  if (nickname.length < 2) return { error: '닉네임은 2자 이상이어야 합니다.' }
+
+  let avatarUrl: string | null = existingAvatarUrl
+
+  if (removeAvatar && existingAvatarUrl) {
+    await deleteImage(supabase, existingAvatarUrl)
+    avatarUrl = null
+  } else if (imageFile && imageFile.size > 0) {
+    const imgError = validateImageFile(imageFile)
+    if (imgError) return { error: imgError }
+    if (existingAvatarUrl) await deleteImage(supabase, existingAvatarUrl)
+    avatarUrl = await uploadImage(supabase, user.id, imageFile)
+    if (!avatarUrl) return { error: '이미지 업로드 중 오류가 발생했습니다.' }
+  }
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({ nickname, bio, avatar_url: avatarUrl })
+    .eq('id', user.id)
+
+  if (error) {
+    if (error.code === '23505') return { error: '이미 사용 중인 닉네임입니다.' }
+    return { error: '프로필 수정 중 오류가 발생했습니다.' }
+  }
+
+  revalidatePath('/', 'layout')
+  return { redirectTo: `/users/${user.id}` }
+}
+
 // --- 판매글 액션 ---
 
 export async function createProduct(prevState: ActionState, formData: FormData): Promise<ActionState> {
