@@ -195,6 +195,69 @@ export async function updateProduct(id: string, prevState: ActionState, formData
   return { redirectTo: `/products/${id}` }
 }
 
+// --- 댓글 액션 ---
+
+export async function addComment(productId: string, prevState: ActionState, formData: FormData): Promise<ActionState> {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: '로그인이 필요합니다.' }
+
+  const content = (formData.get('content') as string)?.trim()
+  if (!content) return { error: '댓글 내용을 입력해주세요.' }
+
+  const { error } = await supabase.from('comments').insert({
+    product_id: productId,
+    user_id: user.id,
+    content,
+  })
+
+  if (error) return { error: '댓글 등록 중 오류가 발생했습니다.' }
+
+  revalidatePath(`/products/${productId}`)
+  return undefined
+}
+
+export async function deleteComment(commentId: string, productId: string) {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return
+
+  await supabase
+    .from('comments')
+    .delete()
+    .eq('id', commentId)
+    .eq('user_id', user.id)
+
+  revalidatePath(`/products/${productId}`)
+}
+
+// --- 좋아요 액션 ---
+
+// 좋아요가 없으면 추가, 있으면 취소(토글)
+export async function toggleLike(productId: string) {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
+
+  const { data: existing } = await supabase
+    .from('likes')
+    .select('id')
+    .eq('product_id', productId)
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  if (existing) {
+    await supabase.from('likes').delete().eq('id', existing.id)
+  } else {
+    await supabase.from('likes').insert({ product_id: productId, user_id: user.id })
+  }
+
+  revalidatePath(`/products/${productId}`)
+}
+
 export async function deleteProduct(id: string) {
   const supabase = await createClient()
 

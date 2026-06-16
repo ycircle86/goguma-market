@@ -3,6 +3,31 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { deleteProduct } from '@/app/actions'
 import DeleteButton from './DeleteButton'
+import LikeButton from './LikeButton'
+import CommentForm from './CommentForm'
+import CommentDeleteButton from './CommentDeleteButton'
+
+type CommentRow = {
+  id: string
+  content: string
+  user_id: string
+  created_at: string
+  profiles: { nickname: string } | { nickname: string }[] | null
+}
+
+function getNickname(profiles: CommentRow['profiles']): string {
+  if (!profiles) return '알 수 없음'
+  return Array.isArray(profiles) ? (profiles[0]?.nickname ?? '알 수 없음') : profiles.nickname
+}
+
+function formatDateTime(dateStr: string): string {
+  return new Date(dateStr).toLocaleString('ko-KR', {
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
 
 function formatPrice(price: number): string {
   if (price === 0) return '무료 나눔'
@@ -25,13 +50,22 @@ export default async function ProductDetailPage({
   const { id } = await params
   const supabase = await createClient()
 
-  const [{ data: { user } }, { data: product }] = await Promise.all([
+  const [{ data: { user } }, { data: product }, { data: comments }, { data: likes }] = await Promise.all([
     supabase.auth.getUser(),
     supabase
       .from('products')
       .select('*, profiles(nickname)')
       .eq('id', id)
       .single(),
+    supabase
+      .from('comments')
+      .select('id, content, user_id, created_at, profiles(nickname)')
+      .eq('product_id', id)
+      .order('created_at', { ascending: true }),
+    supabase
+      .from('likes')
+      .select('user_id')
+      .eq('product_id', id),
   ])
 
   if (!product) notFound()
@@ -39,6 +73,11 @@ export default async function ProductDetailPage({
   const isOwner = user?.id === product.seller_id
   const isSelling = product.status === 'selling'
   const boundDelete = deleteProduct.bind(null, id)
+
+  const commentList = (comments ?? []) as CommentRow[]
+  const likeList = likes ?? []
+  const likeCount = likeList.length
+  const isLiked = !!user && likeList.some((like) => like.user_id === user.id)
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -128,6 +167,66 @@ export default async function ProductDetailPage({
           <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">
             {product.description}
           </p>
+
+          <hr className="border-gray-100" />
+
+          {/* 좋아요 버튼 */}
+          <LikeButton productId={id} initialLiked={isLiked} initialCount={likeCount} />
+        </div>
+
+        {/* 댓글 영역 */}
+        <div className="bg-white rounded-2xl border border-orange-100 p-5 space-y-4">
+          <h3 className="font-bold text-gray-800">
+            댓글 <span className="text-goguma">{commentList.length}</span>
+          </h3>
+
+          {/* 댓글 작성 폼 (로그인한 사용자만) */}
+          {user ? (
+            <CommentForm productId={id} />
+          ) : (
+            <p className="text-sm text-gray-400">
+              댓글을 작성하려면{' '}
+              <Link href="/login" className="text-goguma font-semibold hover:underline">
+                로그인
+              </Link>
+              이 필요해요.
+            </p>
+          )}
+
+          {/* 댓글 목록 */}
+          {commentList.length > 0 ? (
+            <ul className="space-y-4 pt-1">
+              {commentList.map((comment) => (
+                <li key={comment.id} className="flex gap-3">
+                  <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-sm flex-shrink-0">
+                    🍠
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-baseline gap-2 min-w-0">
+                        <span className="font-semibold text-sm text-gray-800 truncate">
+                          {getNickname(comment.profiles)}
+                        </span>
+                        <span className="text-xs text-gray-400 flex-shrink-0">
+                          {formatDateTime(comment.created_at)}
+                        </span>
+                      </div>
+                      {user?.id === comment.user_id && (
+                        <CommentDeleteButton commentId={comment.id} productId={id} />
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-600 mt-0.5 whitespace-pre-wrap break-words">
+                      {comment.content}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-gray-400 text-center py-4">
+              아직 댓글이 없어요. 첫 댓글을 남겨보세요!
+            </p>
+          )}
         </div>
       </main>
     </div>
