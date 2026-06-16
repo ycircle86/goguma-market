@@ -80,9 +80,9 @@ export default async function ProductDetailPage({
   const isLiked = !!user && likeList.some((like) => like.user_id === user.id)
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-goguma-cream">
       {/* 헤더 */}
-      <header className="bg-white border-b border-orange-100 sticky top-0 z-10">
+      <header className="bg-white border-b border-lime-100 sticky top-0 z-10">
         <div className="max-w-screen-md mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="text-gray-500 hover:text-gray-800 transition-colors text-lg leading-none">
@@ -96,7 +96,7 @@ export default async function ProductDetailPage({
             <div className="flex items-center gap-2">
               <Link
                 href={`/products/${id}/edit`}
-                className="px-4 py-2 text-sm font-medium text-goguma border border-goguma rounded-xl hover:bg-orange-50 transition-colors"
+                className="px-4 py-2 text-sm font-medium text-goguma border border-goguma rounded-xl hover:bg-lime-50 transition-colors"
               >
                 수정
               </Link>
@@ -108,7 +108,7 @@ export default async function ProductDetailPage({
 
       <main className="max-w-screen-md mx-auto px-4 py-5 space-y-3">
         {/* 상품 이미지 */}
-        <div className="bg-white rounded-2xl border border-orange-100 overflow-hidden">
+        <div className="bg-white rounded-2xl border border-lime-100 overflow-hidden">
           {product.image_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -119,7 +119,7 @@ export default async function ProductDetailPage({
           ) : (
             <div className="h-64 flex items-center justify-center">
               <div className="text-center text-gray-300">
-                <div className="text-6xl mb-2">📦</div>
+                <div className="text-6xl mb-2">🧟</div>
                 <p className="text-sm">사진 없음</p>
               </div>
             </div>
@@ -127,9 +127,9 @@ export default async function ProductDetailPage({
         </div>
 
         {/* 판매자 정보 */}
-        <div className="bg-white rounded-2xl border border-orange-100 p-4 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-xl flex-shrink-0">
-            🍠
+        <div className="bg-white rounded-2xl border border-lime-100 p-4 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-lime-100 flex items-center justify-center text-xl flex-shrink-0">
+            🧟
           </div>
           <div>
             <p className="font-semibold text-sm text-gray-800">
@@ -140,7 +140,7 @@ export default async function ProductDetailPage({
         </div>
 
         {/* 상품 정보 */}
-        <div className="bg-white rounded-2xl border border-orange-100 p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-lime-100 p-5 space-y-4">
           <div className="flex items-start justify-between gap-3">
             <h2 className="text-xl font-bold text-gray-800 flex-1 leading-snug">
               {product.title}
@@ -148,7 +148,7 @@ export default async function ProductDetailPage({
             <span
               className={`px-2.5 py-1 rounded-full text-xs font-semibold flex-shrink-0 ${
                 isSelling
-                  ? 'bg-orange-100 text-goguma'
+                  ? 'bg-lime-100 text-goguma'
                   : 'bg-gray-100 text-gray-500'
               }`}
             >
@@ -175,7 +175,7 @@ export default async function ProductDetailPage({
         </div>
 
         {/* 댓글 영역 */}
-        <div className="bg-white rounded-2xl border border-orange-100 p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-lime-100 p-5 space-y-4">
           <h3 className="font-bold text-gray-800">
             댓글 <span className="text-goguma">{commentList.length}</span>
           </h3>
@@ -198,7 +198,7 @@ export default async function ProductDetailPage({
             <ul className="space-y-4 pt-1">
               {commentList.map((comment) => (
                 <li key={comment.id} className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-sm flex-shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-lime-100 flex items-center justify-center text-sm flex-shrink-0">
                     🍠
                   </div>
                   <div className="flex-1 min-w-0">
@@ -224,7 +224,7 @@ export default async function ProductDetailPage({
             </ul>
           ) : (
             <p className="text-sm text-gray-400 text-center py-4">
-              아직 댓글이 없어요. 첫 댓글을 남겨보세요!
+              아직 댓글이 없어요. 첫 좀비가 되어 댓글을 남겨보세요! 🧟
             </p>
           )}
         </div>

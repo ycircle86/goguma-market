@@ -59,8 +59,8 @@ export default function EditForm({ product, action }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-orange-100 sticky top-0 z-10">
+    <div className="min-h-screen bg-goguma-cream">
+      <header className="bg-white border-b border-lime-100 sticky top-0 z-10">
         <div className="max-w-screen-md mx-auto px-4 h-14 flex items-center gap-3">
           <Link href={`/products/${product.id}`} className="text-gray-500 hover:text-gray-800 transition-colors">
             ←
@@ -77,7 +77,7 @@ export default function EditForm({ product, action }: Props) {
           <input type="hidden" name="remove_image" value={removeImage ? 'true' : 'false'} />
 
           {/* 사진 관리 */}
-          <div className="bg-white rounded-2xl border border-orange-100 p-5">
+          <div className="bg-white rounded-2xl border border-lime-100 p-5">
             <label className="block text-sm font-semibold text-gray-700 mb-3">
               사진 <span className="text-gray-400 font-normal text-xs">(선택 · 최대 5MB)</span>
             </label>
@@ -109,7 +109,7 @@ export default function EditForm({ product, action }: Props) {
             ) : (
               <label
                 htmlFor="image-upload"
-                className="flex flex-col items-center justify-center h-40 border-2 border-dashed border-orange-200 rounded-xl cursor-pointer hover:bg-orange-50 transition-colors"
+                className="flex flex-col items-center justify-center h-40 border-2 border-dashed border-lime-200 rounded-xl cursor-pointer hover:bg-lime-50 transition-colors"
               >
                 <div className="text-3xl mb-2">📷</div>
                 <p className="text-sm text-gray-400">클릭해서 사진 추가</p>
@@ -128,7 +128,7 @@ export default function EditForm({ product, action }: Props) {
             />
           </div>
 
-          <div className="bg-white rounded-2xl border border-orange-100 p-5">
+          <div className="bg-white rounded-2xl border border-lime-100 p-5">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               제목 <span className="text-goguma">*</span>
             </label>
@@ -142,7 +142,7 @@ export default function EditForm({ product, action }: Props) {
             />
           </div>
 
-          <div className="bg-white rounded-2xl border border-orange-100 p-5">
+          <div className="bg-white rounded-2xl border border-lime-100 p-5">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               카테고리 <span className="text-goguma">*</span>
             </label>
@@ -159,7 +159,7 @@ export default function EditForm({ product, action }: Props) {
             </select>
           </div>
 
-          <div className="bg-white rounded-2xl border border-orange-100 p-5">
+          <div className="bg-white rounded-2xl border border-lime-100 p-5">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               가격 <span className="text-goguma">*</span>
             </label>
@@ -176,7 +176,7 @@ export default function EditForm({ product, action }: Props) {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl border border-orange-100 p-5">
+          <div className="bg-white rounded-2xl border border-lime-100 p-5">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               설명 <span className="text-goguma">*</span>
             </label>

@@ -1,16 +1,23 @@
 @import "tailwindcss";
 
+/* 🧟 귀여운 좀비 테마 색상 (기존 변수 이름은 유지하고 색만 좀비 그린으로 교체) */
 @theme {
-  --color-goguma: #E8622A;
-  --color-goguma-dark: #C4501E;
-  --color-goguma-light: #FFF5F0;
-  --color-goguma-purple: #6B21A8;
-  --color-goguma-cream: #FFFBF5;
+  --color-goguma: #6FAE3A;        /* 좀비 슬라임 그린 (메인) */
+  --color-goguma-dark: #54862B;   /* 진한 슬라임 그린 */
+  --color-goguma-light: #EDF6E1;  /* 연한 민트 */
+  --color-goguma-purple: #7C3AED; /* 포인트 보라 */
+  --color-goguma-cream: #F3F8EC;  /* 연한 민트 크림 배경 */
 }
 
 body {
   font-family: 'Apple SD Gothic Neo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: #FFFBF5;
+  background-color: #F3F8EC;
+}
+
+/* 드래그 선택 색도 좀비 그린으로 */
+::selection {
+  background-color: #C7E8A6;
+  color: #2F4A18;
 }
 
 input:focus {

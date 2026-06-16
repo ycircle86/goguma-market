@@ -36,11 +36,11 @@ export default function LikeButton({ productId, initialLiked, initialCount }: Pr
       aria-pressed={optimistic.liked}
       className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-semibold transition-colors disabled:opacity-60 ${
         optimistic.liked
-          ? 'bg-red-50 border-red-200 text-red-500'
-          : 'bg-white border-orange-100 text-gray-500 hover:bg-orange-50'
+          ? 'bg-lime-100 border-lime-300 text-goguma-dark'
+          : 'bg-white border-lime-100 text-gray-500 hover:bg-lime-50'
       }`}
     >
-      <span className="text-lg leading-none">{optimistic.liked ? '❤️' : '🤍'}</span>
+      <span className="text-lg leading-none">{optimistic.liked ? '💚' : '🤍'}</span>
       <span>좋아요 {optimistic.count}</span>
     </button>
   )

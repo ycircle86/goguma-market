@@ -19,13 +19,13 @@ export default function SignupPage() {
     <div className="min-h-screen flex flex-col items-center justify-center px-4">
       {/* 로고 */}
       <div className="mb-8 text-center">
-        <div className="text-5xl mb-3">🍠</div>
+        <div className="text-5xl mb-3">🧟</div>
         <h1 className="text-2xl font-bold text-gray-800">고구마 마켓</h1>
-        <p className="text-sm text-gray-500 mt-1">동네 이웃과 함께하는 따뜻한 거래</p>
+        <p className="text-sm text-gray-500 mt-1">동네 좀비와 함께하는 으스스 귀여운 거래</p>
       </div>
 
       {/* 카드 */}
-      <div className="w-full max-w-sm bg-white rounded-2xl shadow-sm border border-orange-100 p-8">
+      <div className="w-full max-w-sm bg-white rounded-2xl shadow-sm border border-lime-100 p-8">
         <h2 className="text-lg font-bold text-gray-800 mb-6">회원가입</h2>
 
         <form action={action} className="space-y-4">
@@ -36,7 +36,7 @@ export default function SignupPage() {
             <input
               type="text"
               name="nickname"
-              placeholder="동네 이웃들에게 보일 이름"
+              placeholder="동네 좀비들에게 보일 이름"
               required
               minLength={2}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:border-goguma focus:ring-2 focus:ring-goguma/20 transition-colors"

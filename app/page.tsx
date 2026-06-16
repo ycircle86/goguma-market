@@ -50,12 +50,12 @@ export default async function HomePage() {
     .limit(50)
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-goguma-cream">
       {/* 헤더 */}
-      <header className="bg-white border-b border-orange-100 sticky top-0 z-10">
+      <header className="bg-white border-b border-lime-100 sticky top-0 z-10">
         <div className="max-w-screen-md mx-auto px-4 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 font-bold text-gray-800 text-lg">
-            <span>🍠</span>
+            <span>🧟</span>
             <span>고구마 마켓</span>
           </Link>
 
@@ -101,9 +101,9 @@ export default async function HomePage() {
       <main className="max-w-screen-md mx-auto">
         {!products || products.length === 0 ? (
           <div className="text-center py-24 px-4">
-            <div className="text-5xl mb-4">🛍️</div>
-            <p className="font-semibold text-gray-600 mb-1">아직 등록된 상품이 없어요</p>
-            <p className="text-sm text-gray-400 mb-6">첫 번째 판매글을 올려보세요!</p>
+            <div className="text-5xl mb-4">🧟</div>
+            <p className="font-semibold text-gray-600 mb-1">아직 깨어난 좀비템이 없어요</p>
+            <p className="text-sm text-gray-400 mb-6">첫 번째 좀비템을 풀어놓아 보세요!</p>
             {user ? (
               <Link
                 href="/sell"
@@ -126,10 +126,10 @@ export default async function HomePage() {
               <li key={product.id}>
                 <Link
                   href={`/products/${product.id}`}
-                  className="flex gap-4 px-4 py-4 hover:bg-orange-50 transition-colors"
+                  className="flex gap-4 px-4 py-4 hover:bg-lime-50 transition-colors"
                 >
                   {/* 썸네일 */}
-                  <div className="w-24 h-24 rounded-2xl bg-orange-50 border border-orange-100 flex-shrink-0 overflow-hidden">
+                  <div className="w-24 h-24 rounded-2xl bg-lime-50 border border-lime-100 flex-shrink-0 overflow-hidden">
                     {product.image_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -139,7 +139,7 @@ export default async function HomePage() {
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-3xl">
-                        📦
+                        🧟
                       </div>
                     )}
                   </div>

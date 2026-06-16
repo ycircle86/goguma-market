@@ -19,7 +19,7 @@ function LoginForm() {
   }, [state, router])
 
   return (
-    <div className="w-full max-w-sm bg-white rounded-2xl shadow-sm border border-orange-100 p-8">
+    <div className="w-full max-w-sm bg-white rounded-2xl shadow-sm border border-lime-100 p-8">
       <h2 className="text-lg font-bold text-gray-800 mb-6">로그인</h2>
 
       {message && (
@@ -80,12 +80,12 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4">
       <div className="mb-8 text-center">
-        <div className="text-5xl mb-3">🍠</div>
+        <div className="text-5xl mb-3">🧟</div>
         <h1 className="text-2xl font-bold text-gray-800">고구마 마켓</h1>
-        <p className="text-sm text-gray-500 mt-1">동네 이웃과 함께하는 따뜻한 거래</p>
+        <p className="text-sm text-gray-500 mt-1">동네 좀비와 함께하는 으스스 귀여운 거래</p>
       </div>
 
-      <Suspense fallback={<div className="w-full max-w-sm h-64 bg-white rounded-2xl shadow-sm border border-orange-100" />}>
+      <Suspense fallback={<div className="w-full max-w-sm h-64 bg-white rounded-2xl shadow-sm border border-lime-100" />}>
         <LoginForm />
       </Suspense>
 

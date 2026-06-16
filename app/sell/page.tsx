@@ -44,14 +44,14 @@ export default function SellPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-goguma-cream">
       {/* 헤더 */}
-      <header className="bg-white border-b border-orange-100 sticky top-0 z-10">
+      <header className="bg-white border-b border-lime-100 sticky top-0 z-10">
         <div className="max-w-screen-md mx-auto px-4 h-14 flex items-center gap-3">
           <Link href="/" className="text-gray-500 hover:text-gray-800 transition-colors">
             ←
           </Link>
-          <h1 className="font-bold text-gray-800 text-base">내 물건 팔기</h1>
+          <h1 className="font-bold text-gray-800 text-base">내 좀비템 팔기 🧟</h1>
         </div>
       </header>
 
@@ -60,7 +60,7 @@ export default function SellPage() {
         <form action={action} className="space-y-5">
 
           {/* 사진 업로드 */}
-          <div className="bg-white rounded-2xl border border-orange-100 p-5">
+          <div className="bg-white rounded-2xl border border-lime-100 p-5">
             <label className="block text-sm font-semibold text-gray-700 mb-3">
               사진 <span className="text-gray-400 font-normal text-xs">(선택 · 최대 5MB)</span>
             </label>
@@ -84,7 +84,7 @@ export default function SellPage() {
             ) : (
               <label
                 htmlFor="image-upload"
-                className="flex flex-col items-center justify-center h-40 border-2 border-dashed border-orange-200 rounded-xl cursor-pointer hover:bg-orange-50 transition-colors"
+                className="flex flex-col items-center justify-center h-40 border-2 border-dashed border-lime-200 rounded-xl cursor-pointer hover:bg-lime-50 transition-colors"
               >
                 <div className="text-3xl mb-2">📷</div>
                 <p className="text-sm text-gray-400">클릭해서 사진 추가</p>
@@ -104,7 +104,7 @@ export default function SellPage() {
           </div>
 
           {/* 제목 */}
-          <div className="bg-white rounded-2xl border border-orange-100 p-5">
+          <div className="bg-white rounded-2xl border border-lime-100 p-5">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               제목 <span className="text-goguma">*</span>
             </label>
@@ -119,7 +119,7 @@ export default function SellPage() {
           </div>
 
           {/* 카테고리 */}
-          <div className="bg-white rounded-2xl border border-orange-100 p-5">
+          <div className="bg-white rounded-2xl border border-lime-100 p-5">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               카테고리 <span className="text-goguma">*</span>
             </label>
@@ -137,7 +137,7 @@ export default function SellPage() {
           </div>
 
           {/* 가격 */}
-          <div className="bg-white rounded-2xl border border-orange-100 p-5">
+          <div className="bg-white rounded-2xl border border-lime-100 p-5">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               가격 <span className="text-goguma">*</span>
             </label>
@@ -156,7 +156,7 @@ export default function SellPage() {
           </div>
 
           {/* 설명 */}
-          <div className="bg-white rounded-2xl border border-orange-100 p-5">
+          <div className="bg-white rounded-2xl border border-lime-100 p-5">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               설명 <span className="text-goguma">*</span>
             </label>

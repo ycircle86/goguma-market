@@ -24,7 +24,7 @@ export default function CommentForm({ productId }: Props) {
       <textarea
         name="content"
         rows={2}
-        placeholder="따뜻한 댓글을 남겨주세요"
+        placeholder="으스스하지만 귀여운 댓글을 남겨주세요 🧟"
         required
         className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm resize-none focus:border-goguma focus:ring-2 focus:ring-goguma/20 transition-colors"
       />
